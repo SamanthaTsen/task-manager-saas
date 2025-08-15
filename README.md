@@ -15,7 +15,7 @@ A full-stack task management platform featuring secure authentication, Redis cac
 ###  Task Management (CRUD)
 - Create, read, update, and delete tasks
 - Each task is linked to a specific user
-- Task fields: `title`, `description`, `status`, `category`
+- Task fields: `title`, `status`, `category`, `date`
 - API endpoints scoped to authenticated users
 
 ###  Redis Caching

@@ -45,21 +45,3 @@ A full-stack task management platform featuring secure authentication, Redis cac
 | Caching   | Redis                               |
 | Deployment| Docker / Railway / Vercel           |
 
----
-
-## Folder Structure
-
-project/
-├── client/         # React + Tailwind frontend
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   └── index.css
-├── server/         # Node.js backend
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── middleware/
-│   └── utils/
-

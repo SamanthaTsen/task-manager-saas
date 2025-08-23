@@ -1,6 +1,6 @@
 #  Task Manager SaaS
 
-A full-stack task management platform featuring secure authentication, Redis caching, and a responsive frontend UI. Built with **Node.js**, **MongoDB**, **React**, and **Tailwind CSS**, this project is designed for cloud deployment and scalable performance.
+A full-stack task management platform featuring secure authentication, Redis-based caching for popular tasks, and a responsive frontend UI. Includes automated cache performance monitoring and TTL-based refresh logic. Built with **Node.js**, **MongoDB**, **React**, and **Tailwind CSS**, this project is designed for cloud deployment and scalable performance.
 
 ---
 
@@ -18,11 +18,14 @@ A full-stack task management platform featuring secure authentication, Redis cac
 - Task fields: `title`, `status`, `category`, `date`
 - API endpoints scoped to authenticated users
 
-###  Redis Caching
+### Redis Caching & Monitoring
 - Fast in-memory caching using **Redis**
-- Configurable TTL (Time-To-Live) for cached items
-- Automatic cache invalidation on data updates
-- Simple metrics for cache hits/misses
+- Caching applied to `/tasks/popular` endpoint for optimized performance
+- TTL-based cache control (default: 300 seconds)
+- Automatic cache invalidation on task create/update/delete
+- Integrated cache behavior test script using **Node.js + Redis**
+- Metrics collected: TTL, hit rate, response time, refresh status
+- Cache refresh logic triggered when TTL expires
 
 ###  Frontend UI 
 - Login and Registration pages with form validation
@@ -31,6 +34,17 @@ A full-stack task management platform featuring secure authentication, Redis cac
 - Responsive design using **Tailwind CSS**
 - Built with **React** and **React Router**
 
+## Cache Behavior Testing
+A test script is included to monitor Redis cache performance:
+- Initializes cache if missing
+- Waits for TTL expiration
+- Measures response time before and after expiry
+- Tracks Redis hit/miss statistics
+- Outputs a Markdown report to `monitoring/redis_cache_report.md`
+
+Run the script:
+```bash
+node monitoring/redis_cache_test.js
 
 ---
 
@@ -44,4 +58,5 @@ A full-stack task management platform featuring secure authentication, Redis cac
 | Auth      | JWT, bcrypt                         |
 | Caching   | Redis                               |
 | Deployment| Docker / Railway / Vercel           |
+| Monitoring| Redis CLI, Node.js script            |
 

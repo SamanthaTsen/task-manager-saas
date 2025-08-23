@@ -1,0 +1,5 @@
+\n
+HTTP Code: %{http_code}\n
+Time Total: %{time_total}s\n
+Size Download: %{size_download} bytes\n
+Speed Download: %{speed_download} bytes/sec\n

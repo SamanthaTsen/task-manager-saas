@@ -24,7 +24,7 @@ A full-stack task management platform featuring secure authentication, Redis-bas
 - TTL-based cache control (default: 300 seconds)
 - Automatic cache invalidation on task create/update/delete
 - Integrated cache behavior test script using **Node.js + Redis**
-- Metrics collected: TTL, hit rate, response time, refresh status
+- Metrics collected: TTL, hit rate, response time
 - Cache refresh logic triggered when TTL expires
 
 ###  Frontend UI 

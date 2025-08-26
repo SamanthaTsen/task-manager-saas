@@ -3,6 +3,7 @@ import API from '../api';
 import TaskForm from '../components/TaskForm';
 import TaskList from '../components/TaskList';
 import EditTaskForm from '../components/EditTaskForm';
+import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -13,6 +14,7 @@ export default function Dashboard() {
   const [error, setError] = useState(false);
   const [category, setCategory] = useState('other');
   const [editedCategory, setEditedCategory] = useState('other');
+  const navigate = useNavigate();
 
   const fetchTasks = async () => {
     try {
@@ -82,13 +84,35 @@ export default function Dashboard() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token'); 
+    navigate('/login');               
+  };
+
   useEffect(() => {
     fetchTasks();
   }, []);
 
   return (
     <div className="max-w-xl mx-auto mt-10 p-6 bg-white rounded shadow">
+      <div className="flex justify-between items-center mb-4">
       <h2 className="text-2xl font-bold mb-4">Task List</h2>
+
+      <button
+          onClick={handleLogout}
+          className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+      >
+        Logout
+      </button>
+      </div>
+
+      <button
+        onClick={() => navigate('/stats')}
+        className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+      >
+        Task Analytics
+      </button>      
+    
 
       <TaskForm
         newTask={newTask}

@@ -3,6 +3,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import ErrorBoundary from './components/ErrorBoundary';
+import StatsDashboard from './pages/StatsDashboard';
 
 function App() {
   return (
@@ -18,6 +19,15 @@ function App() {
             </ErrorBoundary>
           }
         />
+        <Route
+          path="/stats"
+          element={
+            <ErrorBoundary>
+              <StatsDashboard />
+            </ErrorBoundary>
+          }
+        />
+
       </Routes>
     </BrowserRouter>
   );

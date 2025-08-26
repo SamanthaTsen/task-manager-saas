@@ -4,7 +4,8 @@ import {
   getTasks,
   updateTask,
   deleteTask,
-  getPopularTasks
+  getPopularTasks,
+  getTaskStats
 } from '../controllers/taskController.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 
@@ -16,6 +17,7 @@ router.post('/', createTask);
 router.get('/', getTasks);
 router.put('/:id', updateTask);
 router.delete('/:id', deleteTask);
-router.get('/popular', authMiddleware, getPopularTasks);
+router.get('/popular', getPopularTasks);
+router.get('/stats', getTaskStats);
 
 export default router;

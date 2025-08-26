@@ -1,64 +1,77 @@
-import requests
 import redis
+import requests
 import time
 from datetime import datetime
-import json
 
-API_URL = "http://localhost:5000/tasks/popular"
-REDIS_HOST = "localhost"
+# Redis configuration
+REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
-CACHE_KEY = "popular_tasks"  
+REDIS_KEY = 'popular_tasks'
 
+# API configuration
+API_URL = 'http://localhost:5000/tasks/popular'
+
+# Connect to Redis
 r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
 
-initial_ttl = r.ttl(CACHE_KEY)
-if initial_ttl == -2:
-    print(f"[INFO] '{CACHE_KEY}' not found in Redis. Initializing cache...")
-    sample_data = {"tasks": ["Task A", "Task B", "Task C"]}
-    r.set(CACHE_KEY, json.dumps(sample_data), ex=300)
-    initial_ttl = r.ttl(CACHE_KEY)
-    print(f"[INFO] Cache initialized. New TTL: {initial_ttl} seconds")
+# Record test time
+test_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+filename_time = datetime.now().strftime('%Y%m%d_%H%M%S')
 
+# Get initial TTL of the key
+initial_ttl = r.ttl(REDIS_KEY)
 
+# Check if the key exists
+key_exists = r.exists(REDIS_KEY) == 1
+
+# Get memory usage of the key (in bytes)
+key_size = r.memory_usage(REDIS_KEY) if key_exists else 0
+
+# Redis DB index
+db_index = REDIS_DB
+
+# Get Redis hit rate
+info = r.info('stats')
+hits = info.get('keyspace_hits', 0)
+misses = info.get('keyspace_misses', 0)
+hit_rate = round(hits / (hits + misses) * 100, 2) if (hits + misses) > 0 else 0.0
+
+# Measure response time before cache expiry
 start = time.time()
 response = requests.get(API_URL)
-end = time.time()
-response_time = end - start
+before_expiry_time = round(time.time() - start, 3)
 
-stats = r.info('stats')
-hits = stats.get('keyspace_hits', 0)
-misses = stats.get('keyspace_misses', 0)
-total = hits + misses
-hit_rate = (hits / total) * 100 if total > 0 else 0
+# Simulate cache expiry by deleting the key
+r.delete(REDIS_KEY)
 
-if initial_ttl > 0:
-    print(f"[INFO] Waiting {initial_ttl + 1} seconds for TTL to expire...")
-    time.sleep(initial_ttl + 1)
+# Measure response time after cache expiry
+start = time.time()
+response = requests.get(API_URL)
+after_expiry_time = round(time.time() - start, 3)
 
-start_expired = time.time()
-response_expired = requests.get(API_URL)
-end_expired = time.time()
-response_time_expired = end_expired - start_expired
+# Get TTL after manual trigger (should be -2 if key doesn't exist)
+new_ttl = r.ttl(REDIS_KEY)
 
-new_ttl = r.ttl(CACHE_KEY)
+# Compose Markdown report
+report = f"""# Redis Cache Behavior Test Report
 
-report = f"""
-# Redis Cache Behavior Test Report
-
-- Test Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+- Test Time: {test_time}
 - API Endpoint: `{API_URL}`
+- Redis DB Index: {db_index}
+- Redis Key Name: `{REDIS_KEY}`
+- Redis Key Exists: {'Yes' if key_exists else 'No'}
+- Redis Key Size: {key_size} bytes
 - Initial TTL: {initial_ttl} seconds
-- Response Time (Before Expiry): {response_time:.3f} seconds
-- Redis Hit Rate: {hit_rate:.2f}%
-- Response Time (After Expiry): {response_time_expired:.3f} seconds
-- New TTL After Refresh: {new_ttl} seconds
-- Cache Refresh Triggered: {"Yes" if new_ttl > 0 else "No"}
-
----
+- Response Time (Before Expiry): {before_expiry_time} seconds
+- Redis Hit Rate: {hit_rate}%
+- Response Time (After Expiry): {after_expiry_time} seconds
+- New TTL After Manual Trigger: {new_ttl} seconds
 """
 
-print(report)
-
-with open("monitoring/redis_cache_report.md", "w", encoding="utf-8") as f:
+# Save report to Markdown file
+filename = f"monitoring/redis_cache_report_{filename_time}.md"
+with open(filename, 'w') as f:
     f.write(report)
+
+print(f"Report saved to: {filename}")

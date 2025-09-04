@@ -4,11 +4,13 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import ErrorBoundary from './components/ErrorBoundary';
 import StatsDashboard from './pages/StatsDashboard';
+import { Navigate } from 'react-router-dom';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route

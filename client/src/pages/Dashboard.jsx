@@ -18,9 +18,11 @@ export default function Dashboard() {
   const fetchTasks = async () => {
     try {
       const res = await API.get('/tasks');
+      console.log('Fetched tasks:', res.data);
       setTasks(res.data);
       setMessage('');
-    } catch {
+    } catch(err) {
+      console.error('Fetch tasks failed:', err);
       setMessage('Failed to obtain the task');
       setError(true);
     }
@@ -28,12 +30,15 @@ export default function Dashboard() {
 
   const createTask = async () => {
     try {
-      await API.post('/tasks', { title: newTask, category });
+      const res = await API.post('/tasks', { title: newTask, category });
+      const newTaskData = res.data;
+
+      setTasks(prev => [newTaskData, ...prev]); 
       setNewTask('');
       setMessage('Task added successfully');
       setError(false);
-      fetchTasks();
-    } catch {
+    } catch (err) {
+      console.error('Task creation failed:', err);
       setMessage('Task added failed');
       setError(true);
     }

@@ -35,29 +35,42 @@ A full-stack task management platform built for scalability and performance. It 
 - Built with **React** and **React Router**
 - Visualizes task completion rate and daily task count using **Chart.js**
 
-## Cache Behavior Testing
+### Cache Behavior Testing
 A test script is included to monitor Redis cache performance:
 - Initializes cache if missing
 - Waits for TTL expiration
 - Measures response time before and after expiry
 - Tracks Redis hit/miss statistics
-- Outputs a Markdown report to `monitoring/redis_cache_report.md`
+- Generates a Markdown report to `monitoring/redis_cache_report.md`
 
-Run the script:
-```bash
+### Run the script:
 node monitoring/redis_cache_test.js
+
+### Docker Support
+This project includes a Docker configuration for simplified local development and deployment.
+- Build and Run
+docker build -t task-manager .
+docker run -p 3000:3000 --env-file .env task-manager
+- Docker Compose
+docker-compose up --build
+- Environment Variables: Create a .env file with the following variables
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+REDIS_URL=your_redis_connection_string
+
+
 
 ---
 
-##  Tech Stack
+###  Tech Stack
 
-| Layer     | Technology                          |
-|-----------|-------------------------------------|
-| Frontend  | React, Tailwind CSS, Axios, Chart.js |
-| Backend   | Node.js, Express                    |
-| Database  | MongoDB + Mongoose                  |
-| Auth      | JWT, bcrypt                         |
-| Caching   | Redis                               |
-| Deployment| Docker / Railway / Vercel           |
-| Monitoring| Redis CLI, Node.js script            |
+| Layer     | Technology                                 |
+|-----------|--------------------------------------------|
+| Frontend  | React, Tailwind CSS, Axios, Chart.js       |
+| Backend   | Node.js, Express                           |
+| Database  | MongoDB + Mongoose                         |
+| Auth      | JWT, bcrypt                                |
+| Caching   | Redis                                      |
+| Deployment| Docker, Docker Compose                     |
+| Monitoring| Redis CLI, Node.js script                  |
 

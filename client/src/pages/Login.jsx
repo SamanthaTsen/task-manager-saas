@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import API from '../api';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -24,6 +26,9 @@ export default function Login() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+      <h1 className="text-3xl font-bold text-center mb-6 text-blue-700">
+         Task Manager
+      </h1>
       <h2 className="text-2xl font-bold mb-4">Login</h2>
       <input
         value={email}
@@ -44,6 +49,10 @@ export default function Login() {
       >
         Login
       </button>
+      <p style={{ textAlign: 'center', marginTop: '1rem' }}>
+         New here? If you don't have an account, <a href="/register" className="text-blue-600 underline font-semibold hover:text-blue-800">create one now</a> and join us!
+      </p>
+
 
       {message && (
         <p className={`mt-4 text-sm ${error ? 'text-red-500' : 'text-green-600'}`}>

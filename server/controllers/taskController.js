@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 
 export const createTask = async (req, res) => {
   try {
+    const userId = req.user.id;
     const task = await Task.create({ ...req.body, user: req.user.id });
 
     await redisClient.del('popular_tasks');
@@ -26,6 +27,7 @@ export const getTasks = async (req, res) => {
 
 export const updateTask = async (req, res) => {
   try {
+    const userId = req.user.id;
     const task = await Task.findOneAndUpdate(
       { _id: req.params.id, user: req.user.id },
       req.body,
@@ -44,6 +46,7 @@ export const updateTask = async (req, res) => {
 
 export const deleteTask = async (req, res) => {
   try {
+    const userId = req.user.id;
     const task = await Task.findOneAndDelete({ _id: req.params.id, user: req.user.id });
     if (!task) return res.status(404).json({ error: 'Task not found' });
     res.json({ message: 'Task deleted' });

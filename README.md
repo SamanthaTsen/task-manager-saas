@@ -1,6 +1,6 @@
 #  Task Manager SaaS
 
-A full-stack task management platform built for scalability and performance. It features secure authentication, Redis-based caching for popular tasks, and a responsive frontend UI. Includes automated cache performance monitoring and TTL-based refresh logic. Built with **Node.js**, **MongoDB**, **React**, and **Tailwind CSS**, and optimized for cloud deployment.
+A full-stack task management platform built for scalability, performance, and cloud-native deployment. It features secure authentication, Redis-based caching, CI/CD automation via GitHub Actions, and a responsive frontend UI. Built with **Node.js**, **MongoDB Atlas**, **React**, and **Tailwind CSS**, and deployed on **Render**.
 
 ---
 
@@ -42,35 +42,49 @@ A test script is included to monitor Redis cache performance:
 - Measures response time before and after expiry
 - Tracks Redis hit/miss statistics
 - Generates a Markdown report to `monitoring/redis_cache_report.md`
-
-### Run the script:
-node monitoring/redis_cache_test.js
+- Run the script: `node monitoring/redis_cache_test.js`
 
 ### Docker Support
-This project includes a Docker configuration for simplified local development and deployment.
+This project includes Docker configuration for simplified local development and deployment.
 - Build and Run
-docker build -t task-manager .
-docker run -p 3000:3000 --env-file .env task-manager
+`docker build -t task-manager .`
+`docker run -p 3000:3000 --env-file .env task-manager`
 - Docker Compose
-docker-compose up --build
+`docker-compose up --build`
 - Environment Variables: Create a .env file with the following variables
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-REDIS_URL=your_redis_connection_string
+`MONGO_URI=your_mongodb_connection_string`
+`JWT_SECRET=your_jwt_secret`
+`REDIS_URL=your_redis_connection_string`
+
+### CI/CD with GitHub Actions
+Automated deployment pipeline using GitHub Actions:
+- Runs on every push to `main`
+- Installs dependencies and builds frontend
+- Triggers deployment to **Render** via API
+- Uses GitHub Secrets to store `RENDER_API_KEY`
+- Workflow file: `.github/workflows/deploy.yml`
 
 
+### Cloud Deployment
 
----
+| Layer        | Platform                     |
+|--------------|------------------------------|
+| Frontend	   | Render Static Site           | 
+| Backend API	 | Render Web Service           | 
+| Database	   | MongoDB Atlas                | 
+| Caching	     | Render Redis                 | 
+| CI/CD	       | GitHub Actions               | 
+
 
 ###  Tech Stack
 
-| Layer     | Technology                                 |
-|-----------|--------------------------------------------|
-| Frontend  | React, Tailwind CSS, Axios, Chart.js       |
-| Backend   | Node.js, Express                           |
-| Database  | MongoDB + Mongoose                         |
-| Auth      | JWT, bcrypt                                |
-| Caching   | Redis                                      |
-| Deployment| Docker, Docker Compose                     |
-| Monitoring| Redis CLI, Node.js script                  |
+| Layer       | Technology                                       |
+|-------------|--------------------------------------------------|
+| Frontend    | React, Tailwind CSS, Axios, Chart.js             |
+| Backend     | Node.js, Express                                 |
+| Database    | MongoDB Atlas + Mongoose                         |
+| Auth        | JWT, bcrypt                                      |
+| Caching     | Redis                                            |
+| Deployment  | Render, Docker, Docker Compose, GitHub Actions   |
+| Monitoring  | Redis CLI, Node.js script                        |
 

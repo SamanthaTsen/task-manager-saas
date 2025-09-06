@@ -1,0 +1,41 @@
+name: Fullstack Deploy to Render
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install server dependencies
+        working-directory: ./server
+        run: npm install
+
+      - name: Install client dependencies
+        working-directory: ./client
+        run: npm install
+
+      - name: Build React app
+        working-directory: ./client
+        run: npm run build
+
+      - name: Trigger Render Deploy (Frontend)
+        run: |
+          curl -X POST https://api.render.com/deploy/srv-d2tlj8ogjchc73a01crg \
+          -H 'Authorization: Bearer ${{ secrets.RENDER_API_KEY }}'
+
+      - name: Trigger Render Deploy (Backend)
+        run: |
+          curl -X POST https://api.render.com/deploy/srv-d2tjauruibrs73es0nmg \
+          -H 'Authorization: Bearer ${{ secrets.RENDER_API_KEY }}'

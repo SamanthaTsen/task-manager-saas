@@ -7,7 +7,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState(false);
-  const navigate = useNavigate();
+
 
   const handleLogin = async () => {
     try {

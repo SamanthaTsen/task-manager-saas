@@ -47,13 +47,13 @@ A test script is included to monitor Redis cache performance:
 ### Docker Support
 This project includes Docker configuration for simplified local development and deployment.
 - Build and Run
-`docker build -t task-manager .`
+`docker build -t task-manager .`, 
 `docker run -p 3000:3000 --env-file .env task-manager`
 - Docker Compose
 `docker-compose up --build`
 - Environment Variables: Create a .env file with the following variables
-`MONGO_URI=your_mongodb_connection_string`
-`JWT_SECRET=your_jwt_secret`
+`MONGO_URI=your_mongodb_connection_string`, 
+`JWT_SECRET=your_jwt_secret`, 
 `REDIS_URL=your_redis_connection_string`
 
 ### CI/CD with GitHub Actions

@@ -44,6 +44,13 @@ A test script is included to monitor Redis cache performance:
 - Generates a Markdown report to `monitoring/redis_cache_report.md`
 - Run the script: `node monitoring/redis_cache_test.js`
 
+### Backend Testing
+This project includes unit and integration tests for backend controllers:
+- Covers core logic in `authController`, `taskController`, and `userController`
+- Uses **Jest** and **Supertest** for HTTP-level integration
+- Validates authentication flow, task CRUD operations, and error handling
+- Run tests: `npm test` inside the `server/` directory
+
 ### Docker Support
 This project includes Docker configuration for simplified local development and deployment.
 - Build and Run
@@ -60,6 +67,7 @@ This project includes Docker configuration for simplified local development and 
 Automated deployment pipeline using GitHub Actions:
 - Runs on every push to `main`
 - Installs dependencies and builds frontend
+- Runs backend test suite (controller-level unit & integration tests)
 - Triggers deployment to **Render** via API
 - Uses GitHub Secrets to store `RENDER_API_KEY`
 - Workflow file: `.github/workflows/deploy.yml`
@@ -87,4 +95,5 @@ Automated deployment pipeline using GitHub Actions:
 | Caching     | Redis                                            |
 | Deployment  | Render, Docker, Docker Compose, GitHub Actions   |
 | Monitoring  | Redis CLI, Node.js script                        |
+| Testing     | Jest, Supertest                                  |      
 

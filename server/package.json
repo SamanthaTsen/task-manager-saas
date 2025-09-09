@@ -4,8 +4,12 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": " jest --config jest.config.js",
+    "test:coverage": " jest --coverage --config jest.config.js",
     "start": "node index.js"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "keywords": [],
   "author": "",
@@ -19,5 +23,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.1",
     "redis": "^5.8.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.1.4"
   }
 }

@@ -45,10 +45,9 @@ A test script is included to monitor Redis cache performance:
 - Run the script: `node monitoring/redis_cache_test.js`
 
 ### Backend Testing
-This project includes unit and integration tests for backend controllers:
-- Covers core logic in `authController`, `taskController`, and `userController`
+This project includes unit and integration tests for backend task-related endpoints:
 - Uses **Jest** and **Supertest** for HTTP-level integration
-- Validates authentication flow, task CRUD operations, and error handling
+- Validates task CRUD operations, redis caching logic, error handling, and edge cases
 - Run tests: `npm test` inside the `server/` directory
 
 ### Docker Support
